@@ -1,5 +1,12 @@
 package com.taylan.dao;
 
-public interface PeopleDao {
+import com.taylan.model.People;
 
+public interface PeopleDao {
+	
+	void savePeople(People people);
+
+	void deletePeople(People people);
+
+	People getPeopleById(Integer id);
 }

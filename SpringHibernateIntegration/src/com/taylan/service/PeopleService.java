@@ -1,5 +1,12 @@
 package com.taylan.service;
 
-public interface PeopleService {
+import com.taylan.model.People;
 
+public interface PeopleService {
+	void savePeople(People people);
+
+	void deletePeople(People people);
+
+	People getPeopleById(Integer id);
+	
 }

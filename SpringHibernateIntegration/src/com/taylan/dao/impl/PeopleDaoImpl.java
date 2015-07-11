@@ -5,26 +5,37 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.taylan.dao.MessageDao;
-import com.taylan.model.Message;
+import com.taylan.dao.PeopleDao;
 import com.taylan.model.People;
 
-public class MessageDaoImpl implements MessageDao {
+public class PeopleDaoImpl implements PeopleDao  {
 	
 	private SessionFactory sessionFactory;
 	
 	@Transactional
 	@Override
-	public  Message getMessage(People people) {
-		
-		Criteria criteria = getSessionFactory().getCurrentSession()
-				.createCriteria(Message.class);
-		criteria.add(Restrictions.eq("people", people));
-		return (Message)criteria.list();
+	public void savePeople(People people) {
+		getSessionFactory().getCurrentSession().saveOrUpdate(people);
 	}
+	@Transactional
+	@Override
+	public void deletePeople(People people) {
+		getSessionFactory().getCurrentSession().delete(people);
+		
+	}
+	@Transactional
+	@Override
+	public People getPeopleById(Integer id) {
+		Criteria criteria = getSessionFactory().getCurrentSession()
+				.createCriteria(People.class);
+		criteria.add(Restrictions.eq("id", id));
+		return (People) criteria.uniqueResult();
+	}
+
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
+
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
