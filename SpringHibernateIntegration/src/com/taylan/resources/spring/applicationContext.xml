@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd ">
+
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/springhibernate" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+
+
+	<!-- Hibernate 4 XML SessionFactory Bean definition -->
+	<bean id="hibernate4SessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.taylan.model.People</value>
+				<value>com.taylan.model.Message</value>
+			</list>
+		</property>
+
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+
+			</props>
+		</property>
+	</bean>
+
+	<context:component-scan base-package="com.taylan.*" />
+
+	<tx:annotation-driven />
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="hibernate4SessionFactory" />
+	</bean>
+
+	<!-- DAO -->
+
+	<bean id="peopleDao" class="com.taylan.dao.impl.PeopleDaoImpl">
+		<property name="hibernate4SessionFactory" ref="hibernate4SessionFactory" />
+	</bean>
+
+	<bean id="messageDao" class="com.taylan.dao.impl.MessageDaoImpl">
+		<property name="hibernate4SessionFactory" ref="hibernate4SessionFactory" />
+	</bean>
+
+	<!-- SERVICE -->
+
+	<bean id="peopleService" class="com.taylan.service.impl.PeopleServiceImpl">
+		<property name="peopleDao" ref="peopleDao" />
+	</bean>
+
+	<bean id="messageService" class="com.taylan.service.impl.MessageServiceImpl">
+		<property name="messageDao" ref="messageDao" />
+	</bean>
+
+	<!-- APP -->
+
+	<bean id="app" class="com.taylan.controllers.HomePageController">
+		<property name="messageService" ref="messageService" />
+		<property name="peopleService" ref="peopleService" />
+	</bean>
+
+
+
+</beans>
