@@ -9,6 +9,11 @@ import com.taylan.dao.MessageDao;
 import com.taylan.model.Message;
 import com.taylan.model.People;
 
+/*
+ * 
+ *  	Author Taylan Kurt  taylankurt@gmail.com
+ */
+
 public class MessageDaoImpl implements MessageDao {
 	
 	private SessionFactory sessionFactory;

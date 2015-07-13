@@ -12,6 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/*
+ * 
+ *  	Author Taylan Kurt  taylankurt@gmail.com
+ */
+
+
 @Entity
 @Table(name = "message", catalog = "springhibernate")
 public class Message implements Serializable {

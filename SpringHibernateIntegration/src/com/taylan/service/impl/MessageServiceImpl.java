@@ -1,10 +1,19 @@
 package com.taylan.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.taylan.dao.MessageDao;
 import com.taylan.model.Message;
 import com.taylan.model.People;
 import com.taylan.service.MessageService;
 
+/*
+ * 
+ *  	Author Taylan Kurt  taylankurt@gmail.com
+ */
+
+
+@Service
 public class MessageServiceImpl implements MessageService {
 	
 	MessageDao messageDao;
